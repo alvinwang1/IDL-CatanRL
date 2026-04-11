@@ -1,0 +1,110 @@
+Evaluating 1000 games via Game API...
+  Model: models/curriculum_4p_vf3.zip
+  Enemies: ['ValueFunction', 'ValueFunction', 'WeightedRandom']
+  [10/1000] Win rate: 0.0% | ETA: 197s
+  [20/1000] Win rate: 0.0% | ETA: 204s
+  [30/1000] Win rate: 0.0% | ETA: 205s
+  [40/1000] Win rate: 0.0% | ETA: 191s
+  [50/1000] Win rate: 0.0% | ETA: 190s
+  [60/1000] Win rate: 1.7% | ETA: 188s
+  [70/1000] Win rate: 1.4% | ETA: 184s
+  [80/1000] Win rate: 1.2% | ETA: 179s
+  [90/1000] Win rate: 1.1% | ETA: 175s
+  [100/1000] Win rate: 1.0% | ETA: 173s
+  [110/1000] Win rate: 0.9% | ETA: 171s
+  [120/1000] Win rate: 0.8% | ETA: 170s
+  [130/1000] Win rate: 0.8% | ETA: 167s
+  [140/1000] Win rate: 0.7% | ETA: 164s
+  [150/1000] Win rate: 0.7% | ETA: 162s
+  [160/1000] Win rate: 0.6% | ETA: 160s
+  [170/1000] Win rate: 1.2% | ETA: 158s
+  [180/1000] Win rate: 1.7% | ETA: 156s
+  [190/1000] Win rate: 1.6% | ETA: 154s
+  [200/1000] Win rate: 1.5% | ETA: 153s
+  [210/1000] Win rate: 1.4% | ETA: 151s
+  [220/1000] Win rate: 1.8% | ETA: 149s
+  [230/1000] Win rate: 2.6% | ETA: 146s
+  [240/1000] Win rate: 2.5% | ETA: 145s
+  [250/1000] Win rate: 2.4% | ETA: 144s
+  [260/1000] Win rate: 2.3% | ETA: 142s
+  [270/1000] Win rate: 2.2% | ETA: 140s
+  [280/1000] Win rate: 2.1% | ETA: 138s
+  [290/1000] Win rate: 2.1% | ETA: 135s
+  [300/1000] Win rate: 2.0% | ETA: 133s
+  [310/1000] Win rate: 1.9% | ETA: 132s
+  [320/1000] Win rate: 1.9% | ETA: 130s
+  [330/1000] Win rate: 1.8% | ETA: 129s
+  [340/1000] Win rate: 1.8% | ETA: 127s
+  [350/1000] Win rate: 2.0% | ETA: 125s
+  [360/1000] Win rate: 1.9% | ETA: 122s
+  [370/1000] Win rate: 1.9% | ETA: 121s
+  [380/1000] Win rate: 1.8% | ETA: 119s
+  [390/1000] Win rate: 1.8% | ETA: 117s
+  [400/1000] Win rate: 1.8% | ETA: 115s
+  [410/1000] Win rate: 1.7% | ETA: 113s
+  [420/1000] Win rate: 1.7% | ETA: 111s
+  [430/1000] Win rate: 1.6% | ETA: 109s
+  [440/1000] Win rate: 1.6% | ETA: 107s
+  [450/1000] Win rate: 1.8% | ETA: 105s
+  [460/1000] Win rate: 1.7% | ETA: 103s
+  [470/1000] Win rate: 2.3% | ETA: 102s
+  [480/1000] Win rate: 2.3% | ETA: 100s
+  [490/1000] Win rate: 2.4% | ETA: 98s
+  [500/1000] Win rate: 2.4% | ETA: 97s
+  [510/1000] Win rate: 2.4% | ETA: 95s
+  [520/1000] Win rate: 2.3% | ETA: 93s
+  [530/1000] Win rate: 2.3% | ETA: 91s
+  [540/1000] Win rate: 2.2% | ETA: 89s
+  [550/1000] Win rate: 2.4% | ETA: 88s
+  [560/1000] Win rate: 2.3% | ETA: 86s
+  [570/1000] Win rate: 2.3% | ETA: 84s
+  [580/1000] Win rate: 2.2% | ETA: 82s
+  [590/1000] Win rate: 2.2% | ETA: 80s
+  [600/1000] Win rate: 2.2% | ETA: 78s
+  [610/1000] Win rate: 2.1% | ETA: 76s
+  [620/1000] Win rate: 2.1% | ETA: 74s
+  [630/1000] Win rate: 2.1% | ETA: 72s
+  [640/1000] Win rate: 2.0% | ETA: 70s
+  [650/1000] Win rate: 2.0% | ETA: 69s
+  [660/1000] Win rate: 2.1% | ETA: 67s
+  [670/1000] Win rate: 2.2% | ETA: 65s
+  [680/1000] Win rate: 2.2% | ETA: 63s
+  [690/1000] Win rate: 2.3% | ETA: 61s
+  [700/1000] Win rate: 2.3% | ETA: 59s
+  [710/1000] Win rate: 2.5% | ETA: 57s
+  [720/1000] Win rate: 2.5% | ETA: 55s
+  [730/1000] Win rate: 2.6% | ETA: 53s
+  [740/1000] Win rate: 2.6% | ETA: 51s
+  [750/1000] Win rate: 2.5% | ETA: 49s
+  [760/1000] Win rate: 2.5% | ETA: 47s
+  [770/1000] Win rate: 2.5% | ETA: 45s
+  [780/1000] Win rate: 2.4% | ETA: 43s
+  [790/1000] Win rate: 2.4% | ETA: 42s
+  [800/1000] Win rate: 2.4% | ETA: 40s
+  [810/1000] Win rate: 2.5% | ETA: 38s
+  [820/1000] Win rate: 2.4% | ETA: 36s
+  [830/1000] Win rate: 2.4% | ETA: 34s
+  [840/1000] Win rate: 2.4% | ETA: 32s
+  [850/1000] Win rate: 2.4% | ETA: 30s
+  [860/1000] Win rate: 2.3% | ETA: 28s
+  [870/1000] Win rate: 2.3% | ETA: 26s
+  [880/1000] Win rate: 2.3% | ETA: 24s
+  [890/1000] Win rate: 2.2% | ETA: 22s
+  [900/1000] Win rate: 2.2% | ETA: 20s
+  [910/1000] Win rate: 2.2% | ETA: 18s
+  [920/1000] Win rate: 2.3% | ETA: 16s
+  [930/1000] Win rate: 2.4% | ETA: 14s
+  [940/1000] Win rate: 2.3% | ETA: 12s
+  [950/1000] Win rate: 2.4% | ETA: 10s
+  [960/1000] Win rate: 2.5% | ETA: 8s
+  [970/1000] Win rate: 2.5% | ETA: 6s
+  [980/1000] Win rate: 2.4% | ETA: 4s
+  [990/1000] Win rate: 2.4% | ETA: 2s
+  [1000/1000] Win rate: 2.4% | ETA: 0s
+
+============================================================
+  RESULTS (1000 games, 198s)
+  Wins: 24 / 1000
+  Win rate: 2.4%  (random chance: 25%)
+  95% CI:   [1.6%, 3.5%]
+============================================================

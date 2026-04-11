@@ -1,0 +1,30 @@
+# Curriculum training: progressively harder opponents
+# 4 stages, 12M total steps, bigger model [1024, 512, 256]
+reward_type: "pbrs"
+pbrs_lambda: 1.0
+pbrs_normalize: true
+
+net_arch: [1024, 512, 256]
+learning_rate: 3e-4
+n_steps: 2048
+batch_size: 256
+n_epochs: 10
+gamma: 0.999
+ent_coef: 0.01
+
+save_path: "models/curriculum_4p"
+tb_log: "logs/curriculum_4p"
+log_freq: 10_000
+
+# Top-level enemies used by evaluate.py
+enemies: ["AlphaBeta", "WeightedRandom", "WeightedRandom"]
+
+curriculum:
+  - enemies: ["WeightedRandom", "WeightedRandom", "WeightedRandom"]
+    timesteps: 3_000_000
+  - enemies: ["VictoryPoint", "WeightedRandom", "WeightedRandom"]
+    timesteps: 3_000_000
+  - enemies: ["ValueFunction", "WeightedRandom", "WeightedRandom"]
+    timesteps: 4_000_000
+  - enemies: ["AlphaBeta", "WeightedRandom", "WeightedRandom"]
+    timesteps: 2_000_000
