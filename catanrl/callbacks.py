@@ -52,10 +52,11 @@ class CatanLoggingCallback(BaseCallback):
         self._stage_enemies = stage_config["enemies"]
         self._interval_start_time = time.time()
         self._interval_start_step = self.num_timesteps
+        vps = stage_config.get("vps_to_win", 10)
         print(f"\n{'='*70}")
         print(f"  CURRICULUM STAGE {stage_index + 1}")
         print(f"  Enemies: {', '.join(stage_config['enemies'])}")
-        print(f"  Budget: {stage_config['timesteps']:,} steps")
+        print(f"  Budget: {stage_config['timesteps']:,} steps  |  VPs to win: {vps}")
         print(f"{'='*70}\n")
 
     def _print_header(self):
@@ -96,9 +97,36 @@ class CatanLoggingCallback(BaseCallback):
         if self.num_timesteps - self._last_log_step >= self.log_freq:
             if self.total_episodes > 0:
                 self._print_stats()
+                self._log_to_tb()
             self._last_log_step = self.num_timesteps
 
         return True
+
+    def _log_to_tb(self):
+        if not (hasattr(self, "logger") and self.logger is not None):
+            return
+        w = self._window_size
+        if not self.episode_won:
+            return
+
+        recent_won = self.episode_won[-w:]
+        recent_wr = sum(recent_won) / len(recent_won)
+        overall_wr = self.wins / self.total_episodes
+        recent_lengths = self.episode_lengths[-w:]
+
+        self.logger.record("catan/win_rate_50ep", recent_wr)
+        self.logger.record("catan/win_rate_overall", overall_wr)
+        self.logger.record("catan/ep_length_mean", np.mean(recent_lengths))
+        self.logger.record("catan/total_episodes", self.total_episodes)
+
+        if self.ep_shaping_totals:
+            recent_shaping = self.ep_shaping_totals[-w:]
+            self.logger.record("catan/pbrs_shaping_per_ep", np.mean(recent_shaping))
+        if self.ep_phi_finals:
+            recent_phi = self.ep_phi_finals[-w:]
+            self.logger.record("catan/phi_pre_terminal", np.mean(recent_phi))
+
+        self.logger.dump(self.num_timesteps)
 
     def _print_stats(self):
         now = time.time()

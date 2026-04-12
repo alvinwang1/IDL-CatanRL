@@ -13,12 +13,17 @@ def sparse_reward(game, p0_color):
         return -1
 
 
-def make_pbrs_reward(gamma=0.999, lam=1.0, normalize=True):
+def make_pbrs_reward(gamma=0.999, lam=1.0, normalize=True, phi_cap=None):
     """Create a PBRS reward function using Catanatron's hand-crafted value function.
 
     The shaped reward is: r_sparse + lam * (gamma * Phi(s') - Phi(s))
     where Phi(s) = base_fn(game, color), optionally normalized.
     Terminal states have Phi = 0 (PBRS requirement).
+
+    phi_cap: if set, clamps Phi(s_pre_terminal) to this value before applying
+    the terminal correction. Without a cap, a strong pre-terminal board (high Phi)
+    creates a large negative terminal shaping that can make wins total-negative.
+    E.g. phi_cap=3.0 ensures wins always yield at least +1 - lam*3.0 total reward.
 
     Exposes per-step diagnostics via reward_function.stats dict.
     """
@@ -43,9 +48,13 @@ def make_pbrs_reward(gamma=0.999, lam=1.0, normalize=True):
         winning_color = game.winning_color()
 
         if winning_color is not None:
-            # Terminal state: Phi(terminal) = 0 for PBRS correctness
+            # Terminal state: Phi(terminal) = 0 for PBRS correctness.
+            # Apply phi_cap to prevent a strong pre-terminal board from making
+            # the terminal correction so negative that wins total to < 0.
             terminal_reward = 1.0 if winning_color == p0_color else -1.0
             phi_prev = state["phi_prev"] if state["phi_prev"] is not None else 0.0
+            if phi_cap is not None:
+                phi_prev = min(phi_prev, phi_cap)
             shaping = gamma * 0.0 - phi_prev
             state["phi_prev"] = None
             total = terminal_reward + lam * shaping
@@ -101,6 +110,7 @@ def build_reward(config):
             gamma=config.get("gamma", 0.999),
             lam=config.get("pbrs_lambda", 1.0),
             normalize=config.get("pbrs_normalize", True),
+            phi_cap=config.get("pbrs_phi_cap", None),
         )
     else:
         raise ValueError(f"Unknown reward_type: {reward_type}")

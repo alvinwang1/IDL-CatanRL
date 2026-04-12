@@ -9,9 +9,11 @@ DEFAULTS = {
     "reward_type": "sparse",
     "pbrs_lambda": 1.0,
     "pbrs_normalize": True,
+    "pbrs_phi_cap": None,  # float or None; caps Phi(s_pre_terminal) at terminal step
     # Model
     "net_arch": [256, 256],
     "learning_rate": 3e-4,
+    "lr_schedule": "constant",  # "constant" or "linear"
     "n_steps": 2048,
     "batch_size": 64,
     "n_epochs": 10,
@@ -27,6 +29,8 @@ DEFAULTS = {
     "eval_deterministic": True,
     # Curriculum (None = single-stage training)
     "curriculum": None,
+    # Resume from an existing model checkpoint (path without .zip)
+    "resume_from": None,
 }
 
 
@@ -45,7 +49,7 @@ def load_config(path=None, overrides=None):
 
 
 # Keys that must be specific types (YAML sometimes parses e.g. 3e-4 as string)
-_FLOAT_KEYS = {"learning_rate", "gamma", "ent_coef", "pbrs_lambda"}
+_FLOAT_KEYS = {"learning_rate", "gamma", "ent_coef", "pbrs_lambda", "pbrs_phi_cap"}
 _INT_KEYS = {"n_steps", "batch_size", "n_epochs", "total_timesteps", "log_freq",
              "eval_games", "vps_to_win"}
 
