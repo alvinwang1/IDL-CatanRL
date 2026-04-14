@@ -75,7 +75,7 @@ def _merge_stage(config, stage):
     merged["enemies"] = stage["enemies"]
     merged["total_timesteps"] = stage["timesteps"]
     # Allow per-stage overrides for any key defined in the stage block
-    for key in ("vps_to_win", "pbrs_lambda", "pbrs_phi_cap", "ent_coef"):
+    for key in ("vps_to_win", "pbrs_lambda", "pbrs_phi_cap", "ent_coef", "vp_scale"):
         if key in stage:
             merged[key] = stage[key]
     return merged

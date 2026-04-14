@@ -16,7 +16,11 @@ class PPOPlayer(Player):
 
     def __init__(self, color, model_path, num_players=4, deterministic=True):
         super().__init__(color, is_bot=True)
-        self.model = MaskablePPO.load(model_path)
+        # SB3 appends .zip automatically — strip it if already present
+        clean_path = str(model_path)
+        if clean_path.endswith(".zip"):
+            clean_path = clean_path[:-4]
+        self.model = MaskablePPO.load(clean_path)
         self.deterministic = deterministic
         self.features = get_feature_ordering(num_players)
 

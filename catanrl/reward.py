@@ -1,3 +1,5 @@
+from catanatron.state_functions import player_key
+
 from catanrl.catanatron_ext.value import base_fn, DEFAULT_WEIGHTS
 
 VP_WEIGHT = DEFAULT_WEIGHTS["public_vps"]  # 3e14
@@ -13,7 +15,7 @@ def sparse_reward(game, p0_color):
         return -1
 
 
-def make_pbrs_reward(gamma=0.999, lam=1.0, normalize=True, phi_cap=None):
+def make_pbrs_reward(gamma=0.999, lam=1.0, normalize=True, phi_cap=None, vp_scale=0.0):
     """Create a PBRS reward function using Catanatron's hand-crafted value function.
 
     The shaped reward is: r_sparse + lam * (gamma * Phi(s') - Phi(s))
@@ -28,7 +30,7 @@ def make_pbrs_reward(gamma=0.999, lam=1.0, normalize=True, phi_cap=None):
     Exposes per-step diagnostics via reward_function.stats dict.
     """
     value_fn = base_fn(DEFAULT_WEIGHTS)
-    state = {"phi_prev": None}
+    state = {"phi_prev": None, "prev_vps": None}
     # Exposed stats for logging (updated every call)
     # "last_ep_*" fields hold completed-episode data for the callback to read
     stats = {
@@ -40,8 +42,10 @@ def make_pbrs_reward(gamma=0.999, lam=1.0, normalize=True, phi_cap=None):
         "last_ep_shaping_total": 0.0,
         "last_ep_phi_max": 0.0,
         "last_ep_phi_pre_terminal": 0.0,
+        "last_ep_vp_delta_total": 0.0,
         "_ep_phi_values": [],
         "_ep_shaping_values": [],
+        "_ep_vp_deltas": [],
     }
 
     def reward_function(game, p0_color):
@@ -69,8 +73,11 @@ def make_pbrs_reward(gamma=0.999, lam=1.0, normalize=True, phi_cap=None):
             stats["last_ep_shaping_total"] = sum(ep_shaping) + lam * shaping
             stats["last_ep_phi_max"] = max(ep_phi) if ep_phi else 0.0
             stats["last_ep_phi_pre_terminal"] = ep_phi[-1] if ep_phi else 0.0
+            stats["last_ep_vp_delta_total"] = sum(stats["_ep_vp_deltas"])
             stats["_ep_phi_values"] = []
             stats["_ep_shaping_values"] = []
+            stats["_ep_vp_deltas"] = []
+            state["prev_vps"] = None
             return total
 
         phi_current = value_fn(game, p0_color)
@@ -90,7 +97,20 @@ def make_pbrs_reward(gamma=0.999, lam=1.0, normalize=True, phi_cap=None):
 
         shaping = gamma * phi_current - state["phi_prev"]
         state["phi_prev"] = phi_current
-        total = lam * shaping
+
+        # VP delta reward: fires when agent gains a victory point
+        vp_reward = 0.0
+        if vp_scale > 0.0:
+            key = player_key(game.state, p0_color)
+            current_vps = game.state.player_state[f"{key}_ACTUAL_VICTORY_POINTS"]
+            if state["prev_vps"] is not None:
+                delta_vp = max(0, current_vps - state["prev_vps"])
+                vp_reward = vp_scale * delta_vp
+                if delta_vp > 0:
+                    stats["_ep_vp_deltas"].append(vp_reward)
+            state["prev_vps"] = current_vps
+
+        total = lam * shaping + vp_reward
         stats["shaping"] = lam * shaping
         stats["sparse"] = 0.0
         stats["total"] = total
@@ -111,6 +131,7 @@ def build_reward(config):
             lam=config.get("pbrs_lambda", 1.0),
             normalize=config.get("pbrs_normalize", True),
             phi_cap=config.get("pbrs_phi_cap", None),
+            vp_scale=config.get("vp_scale", 0.0),
         )
     else:
         raise ValueError(f"Unknown reward_type: {reward_type}")

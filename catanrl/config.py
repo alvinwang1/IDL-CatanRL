@@ -10,6 +10,7 @@ DEFAULTS = {
     "pbrs_lambda": 1.0,
     "pbrs_normalize": True,
     "pbrs_phi_cap": None,  # float or None; caps Phi(s_pre_terminal) at terminal step
+    "vp_scale": 0.0,      # float; extra reward per VP gained (0.0 = disabled)
     # Model
     "net_arch": [256, 256],
     "learning_rate": 3e-4,
@@ -49,7 +50,7 @@ def load_config(path=None, overrides=None):
 
 
 # Keys that must be specific types (YAML sometimes parses e.g. 3e-4 as string)
-_FLOAT_KEYS = {"learning_rate", "gamma", "ent_coef", "pbrs_lambda", "pbrs_phi_cap"}
+_FLOAT_KEYS = {"learning_rate", "gamma", "ent_coef", "pbrs_lambda", "pbrs_phi_cap", "vp_scale"}
 _INT_KEYS = {"n_steps", "batch_size", "n_epochs", "total_timesteps", "log_freq",
              "eval_games", "vps_to_win"}
 

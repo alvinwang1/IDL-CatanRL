@@ -31,6 +31,7 @@ class CatanLoggingCallback(BaseCallback):
         # PBRS tracking
         self.ep_shaping_totals = []
         self.ep_phi_finals = []
+        self.ep_vp_delta_totals = []
 
         # Best performance tracking
         self.best_recent_wr = 0.0
@@ -85,6 +86,7 @@ class CatanLoggingCallback(BaseCallback):
                     won = stats.get("last_ep_won", ep_reward > 0)
                     self.ep_shaping_totals.append(stats.get("last_ep_shaping_total", 0.0))
                     self.ep_phi_finals.append(stats.get("last_ep_phi_pre_terminal", 0.0))
+                    self.ep_vp_delta_totals.append(stats.get("last_ep_vp_delta_total", 0.0))
                 else:
                     won = ep_reward > 0
 
@@ -125,6 +127,8 @@ class CatanLoggingCallback(BaseCallback):
         if self.ep_phi_finals:
             recent_phi = self.ep_phi_finals[-w:]
             self.logger.record("catan/phi_pre_terminal", np.mean(recent_phi))
+        if self.ep_vp_delta_totals:
+            self.logger.record("catan/vp_delta_per_ep", np.mean(self.ep_vp_delta_totals[-w:]))
 
         self.logger.dump(self.num_timesteps)
 
@@ -210,6 +214,10 @@ class CatanLoggingCallback(BaseCallback):
             if recent_phi:
                 print(f"  Phi(pre-terminal): {np.mean(recent_phi):.4f} "
                       f"| range [{np.min(recent_phi):.4f}, {np.max(recent_phi):.4f}]")
+        if self.ep_vp_delta_totals:
+            recent_vp = self.ep_vp_delta_totals[-w:]
+            print(f"  VP delta reward/ep: {np.mean(recent_vp):.3f} "
+                  f"(max {np.max(recent_vp):.3f})")
 
         # PPO policy metrics from SB3 logger
         if hasattr(self, "logger") and self.logger is not None:
