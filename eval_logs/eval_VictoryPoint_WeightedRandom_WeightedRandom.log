@@ -1,0 +1,31 @@
+Evaluating 1000 games via gym env...
+  Model: models/curriculum_4p_vf3.zip
+  Enemies: ['VictoryPoint', 'WeightedRandom', 'WeightedRandom']
+  [50/1000] Win rate: 58.0% | ETA: 78s
+  [100/1000] Win rate: 55.0% | ETA: 78s
+  [150/1000] Win rate: 53.3% | ETA: 75s
+  [200/1000] Win rate: 52.0% | ETA: 71s
+  [250/1000] Win rate: 52.0% | ETA: 66s
+  [300/1000] Win rate: 51.3% | ETA: 62s
+  [350/1000] Win rate: 51.4% | ETA: 57s
+  [400/1000] Win rate: 52.5% | ETA: 53s
+  [450/1000] Win rate: 51.6% | ETA: 49s
+  [500/1000] Win rate: 51.0% | ETA: 44s
+  [550/1000] Win rate: 51.6% | ETA: 40s
+  [600/1000] Win rate: 52.5% | ETA: 35s
+  [650/1000] Win rate: 52.0% | ETA: 31s
+  [700/1000] Win rate: 51.9% | ETA: 27s
+  [750/1000] Win rate: 51.9% | ETA: 22s
+  [800/1000] Win rate: 51.5% | ETA: 18s
+  [850/1000] Win rate: 51.6% | ETA: 13s
+  [900/1000] Win rate: 51.6% | ETA: 9s
+  [950/1000] Win rate: 51.1% | ETA: 4s
+  [1000/1000] Win rate: 50.6% | ETA: 0s
+
+============================================================
+  RESULTS (1000 games, 90s)
+  Wins: 506 | Losses: 494 | Draws: 0
+  Win rate: 50.6%  (random chance: 25%)
+  95% CI:   [47.5%, 53.7%]
+  Avg episode length: 165
+============================================================
