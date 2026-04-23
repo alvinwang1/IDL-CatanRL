@@ -1,0 +1,68 @@
+\relax 
+\providecommand\hyper@newdestlabel[2]{}
+\providecommand\HyField@AuxAddToFields[1]{}
+\providecommand\HyField@AuxAddToCoFields[2]{}
+\citation{collazo2021catanatron}
+\citation{ng1999policy}
+\citation{bengio2009curriculum}
+\citation{huang2022maskableppo}
+\@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{1}{section.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {2}Background and Related Work}{1}{section.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Catanatron.}{1}{section*.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Potential-Based Reward Shaping (PBRS).}{1}{section*.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Curriculum Learning.}{1}{section*.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{MaskablePPO.}{1}{section*.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {3}Method}{2}{section.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Environment}{2}{subsection.3.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Reward Functions}{2}{subsection.3.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Sparse baseline.}{2}{section*.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{PBRS.}{2}{section*.7}\protected@file@percent }
+\newlabel{eq:pbrs}{{1}{2}{PBRS}{equation.1}{}}
+\@writefile{toc}{\contentsline {paragraph}{VP delta reward.}{2}{section*.8}\protected@file@percent }
+\newlabel{eq:vp}{{3}{2}{VP delta reward}{equation.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Training Infrastructure}{2}{subsection.3.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4}Curriculum}{2}{subsection.3.4}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Training curriculum. All stages use PBRS $\lambda {=}0.5$, $\phi _{\max }$ as shown, $\alpha {=}0.2$ for VP delta stages.}}{2}{table.caption.9}\protected@file@percent }
+\providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
+\newlabel{tab:curriculum}{{1}{2}{Training curriculum. All stages use PBRS $\lambda {=}0.5$, $\phi _{\max }$ as shown, $\alpha {=}0.2$ for VP delta stages}{table.caption.9}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4}Experiments}{2}{section.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}PBRS Lambda Ablation}{2}{subsection.4.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Finding.}{2}{section*.10}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Win rate vs.\ training steps for different PBRS $\lambda $ values, all with constant LR vs. 3$\times $ WeightedRandom opponents. $\lambda {=}0.5$ achieves the highest final win rate.}}{3}{figure.caption.11}\protected@file@percent }
+\newlabel{fig:lambda_curves}{{1}{3}{Win rate vs.\ training steps for different PBRS $\lambda $ values, all with constant LR vs. 3$\times $ WeightedRandom opponents. $\lambda {=}0.5$ achieves the highest final win rate}{figure.caption.11}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Final win rate (mean of last 50 episodes) for each ablation condition. Linear LR (dashed) consistently outperforms constant LR (solid). Dashed line = 25\% random baseline.}}{3}{figure.caption.12}\protected@file@percent }
+\newlabel{fig:bar_winrate}{{2}{3}{Final win rate (mean of last 50 episodes) for each ablation condition. Linear LR (dashed) consistently outperforms constant LR (solid). Dashed line = 25\% random baseline}{figure.caption.12}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}VP Delta Reward Ablation}{3}{subsection.4.2}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Win rate vs.\ steps for VP delta reward ablation. All conditions start from the same checkpoint. $\alpha {=}0.2$ shows the highest final win rate and fastest early learning. Dashed grey line = previous best win rate vs.\ ValueFunction ($\sim $5\%) without VP shaping.}}{3}{figure.caption.13}\protected@file@percent }
+\newlabel{fig:vp_curves}{{3}{3}{Win rate vs.\ steps for VP delta reward ablation. All conditions start from the same checkpoint. $\alpha {=}0.2$ shows the highest final win rate and fastest early learning. Dashed grey line = previous best win rate vs.\ ValueFunction ($\sim $5\%) without VP shaping}{figure.caption.13}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Final win rate by VP delta scale $\alpha $. All non-zero $\alpha $ conditions beat the no-VP baseline. $\alpha {=}0.2$ wins by the largest margin (12.0\% late average vs.\ 9.7\%).}}{3}{figure.caption.14}\protected@file@percent }
+\newlabel{fig:vp_bar}{{4}{3}{Final win rate by VP delta scale $\alpha $. All non-zero $\alpha $ conditions beat the no-VP baseline. $\alpha {=}0.2$ wins by the largest margin (12.0\% late average vs.\ 9.7\%)}{figure.caption.14}{}}
+\@writefile{toc}{\contentsline {paragraph}{Finding.}{3}{section*.15}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}Full Training Run}{3}{subsection.4.3}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Win rate (50-episode rolling average) over the full 27M-step training run. Shaded regions correspond to curriculum stages. Stage 3 (VF-8) produces a peak of 22\% before the vps=8$\to $10 transition drops performance. Stage 4 (VF-10) stabilises around 8--10\%. Stage 5 (2$\times $ VF) is too hard: win rate remains near 2--4\%.}}{4}{figure.caption.16}\protected@file@percent }
+\newlabel{fig:curriculum}{{5}{4}{Win rate (50-episode rolling average) over the full 27M-step training run. Shaded regions correspond to curriculum stages. Stage 3 (VF-8) produces a peak of 22\% before the vps=8$\to $10 transition drops performance. Stage 4 (VF-10) stabilises around 8--10\%. Stage 5 (2$\times $ VF) is too hard: win rate remains near 2--4\%}{figure.caption.16}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Win rate vs.\ WeightedRandom (blue) and ValueFunction (red) for key training checkpoints. VP shaping curriculum improves VF performance from 7\% (PBRS only) to 10.7\% (final model) while maintaining 66\% WR performance. Stage 5 (2$\times $ VF) provides no VF improvement but does not degrade WR performance either.}}{4}{figure.caption.17}\protected@file@percent }
+\newlabel{fig:ladder}{{6}{4}{Win rate vs.\ WeightedRandom (blue) and ValueFunction (red) for key training checkpoints. VP shaping curriculum improves VF performance from 7\% (PBRS only) to 10.7\% (final model) while maintaining 66\% WR performance. Stage 5 (2$\times $ VF) provides no VF improvement but does not degrade WR performance either}{figure.caption.17}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {5}Results}{4}{section.5}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Win rates at key checkpoints (300 games each, 95\% CI shown for VF). Random baseline = 25\%.}}{4}{table.caption.18}\protected@file@percent }
+\newlabel{tab:results}{{2}{4}{Win rates at key checkpoints (300 games each, 95\% CI shown for VF). Random baseline = 25\%}{table.caption.18}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {6}Discussion}{4}{section.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.1}What Worked}{4}{subsection.6.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{PBRS + linear LR decay}{4}{section*.19}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Phi cap}{4}{section*.20}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{VP delta reward}{4}{section*.21}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{VPs=8 curriculum stage}{4}{section*.22}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.2}What Did Not Work}{4}{subsection.6.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Stage 5 (2$\times $ VF).}{4}{section*.23}\protected@file@percent }
+\bibstyle{plain}
+\bibcite{collazo2021catanatron}{1}
+\bibcite{ng1999policy}{2}
+\bibcite{schulman2017ppo}{3}
+\bibcite{huang2022maskableppo}{4}
+\bibcite{bengio2009curriculum}{5}
+\bibcite{raffin2021sb3}{6}
+\@writefile{toc}{\contentsline {paragraph}{PBRS alone is insufficient for hard opponents.}{5}{section*.24}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.3}Ceiling Analysis}{5}{subsection.6.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.4}Future Work}{5}{subsection.6.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {7}Conclusion}{5}{section.7}\protected@file@percent }
+\gdef \@abspage@last{5}
