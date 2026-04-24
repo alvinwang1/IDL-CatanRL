@@ -38,7 +38,6 @@ Thumbs.db
 
 # ML / RL project outputs
 logs/
-charts/
 models/
 snapshots/
 runs/
