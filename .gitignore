@@ -1,0 +1,58 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+
+# Environment / secrets
+.env
+.env.local
+
+# Testing / coverage
+.pytest_cache/
+.coverage
+.mypy_cache/
+.ruff_cache/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# IDE / editor
+.vscode/
+.idea/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# ML / RL project outputs
+logs/
+charts/
+models/
+snapshots/
+runs/
+wandb/
+tensorboard/
+checkpoints/
+
+# Model artifacts
+*.zip
+*.pt
+*.pth
+*.ckpt
+*.h5
+*.pkl
+
+# Specific ablation outputs
+vp_ablation_*/

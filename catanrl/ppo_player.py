@@ -16,13 +16,20 @@ class PPOPlayer(Player):
 
     def __init__(self, color, model_path, num_players=4, deterministic=True):
         super().__init__(color, is_bot=True)
-        # SB3 appends .zip automatically — strip it if already present
-        clean_path = str(model_path)
-        if clean_path.endswith(".zip"):
-            clean_path = clean_path[:-4]
-        self.model = MaskablePPO.load(clean_path)
+        from catanrl.env_utils import ensure_model_zip
+        self.model = MaskablePPO.load(ensure_model_zip(str(model_path)) + ".zip")
         self.deterministic = deterministic
         self.features = get_feature_ordering(num_players)
+
+    @classmethod
+    def from_model(cls, color, model, num_players=4, deterministic=True):
+        """Construct a PPOPlayer from an already-loaded MaskablePPO model."""
+        player = cls.__new__(cls)
+        Player.__init__(player, color, is_bot=True)
+        player.model = model
+        player.deterministic = deterministic
+        player.features = get_feature_ordering(num_players)
+        return player
 
     def decide(self, game: Game, playable_actions):
         if len(playable_actions) == 1:

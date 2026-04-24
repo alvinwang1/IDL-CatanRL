@@ -1,0 +1,45 @@
+# Population-based self-play starting from the vp_ablation_stage2 checkpoint.
+#
+# The snapshot pool is pre-seeded with that model, then new snapshots are
+# added every 100k steps and opponents are re-sampled from the pool at the
+# same cadence (70% PPO snapshots, 30% WeightedRandom for diversity).
+#
+# Run:
+#   python -m catanrl.train --config configs/self_play_4p.yaml
+
+reward_type: "pbrs"
+pbrs_lambda: 1.0
+pbrs_normalize: true
+pbrs_phi_cap: 3.0
+
+net_arch: [256, 256]
+learning_rate: 1e-4         # lower LR for fine-tuning from pretrained weights
+lr_schedule: "linear"
+n_steps: 2048
+batch_size: 64
+n_epochs: 10
+gamma: 0.999
+ent_coef: 0.01
+
+total_timesteps: 5_000_000
+
+save_path: "models/self_play_4p"
+tb_log:    "logs/self_play_4p"
+log_freq:  10_000
+
+# Warm-start from the uploaded checkpoint (directory format is handled automatically)
+resume_from: "vp_ablation_stage2"
+
+# Initial opponents before first swap (also the seeded snapshot)
+enemies:
+  - "PPO:vp_ablation_stage2"
+  - "PPO:vp_ablation_stage2"
+  - "WeightedRandom"
+
+self_play:
+  snapshot_dir:   "snapshots/self_play_4p"
+  snapshot_freq:  100_000   # save a snapshot every 100k steps
+  swap_freq:      100_000   # resample opponents every 100k steps
+  ppo_prob:       0.7       # 70% chance each opponent slot uses a PPO snapshot
+  seed_models:
+    - "vp_ablation_stage2"  # pre-populate the pool before training begins

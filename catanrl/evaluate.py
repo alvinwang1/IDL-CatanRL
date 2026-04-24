@@ -27,7 +27,8 @@ def wilson_ci(wins, total, z=1.96):
 def evaluate_gym(config, model_path):
     """Evaluate via gym environment (for Random/WeightedRandom opponents)."""
     model = MaskablePPO.load(model_path)
-    enemies = build_enemies(config["enemies"])
+    num_players = 1 + len(config["enemies"])
+    enemies = build_enemies(config["enemies"], num_players=num_players)
 
     eval_env = gymnasium.make(
         "catanatron-v1",

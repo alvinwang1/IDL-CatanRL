@@ -8,7 +8,7 @@ from sb3_contrib.common.maskable.policies import MaskableActorCriticPolicy
 from sb3_contrib.ppo_mask import MaskablePPO
 
 from catanrl.config import load_config
-from catanrl.env_utils import make_env
+from catanrl.env_utils import make_env, ensure_model_zip
 from catanrl.callbacks import CatanLoggingCallback
 
 
@@ -95,12 +95,10 @@ def train_single(config):
 
     resume_from = config.get("resume_from")
     if resume_from:
-        # Load existing weights; set_env applies the new env + reward fn.
-        # reset_num_timesteps=False keeps the step counter continuous so the
-        # linear LR schedule treats total_timesteps as the *full* run length
-        # (e.g. 4M) and progress_remaining picks up from where it left off.
+        # ensure_model_zip converts directory-format saves to .zip if needed.
+        clean_resume = ensure_model_zip(resume_from) + ".zip"
         model = MaskablePPO.load(
-            resume_from,
+            clean_resume,
             env=env,
             learning_rate=_make_lr(config),
             tensorboard_log=config["tb_log"],
@@ -113,20 +111,45 @@ def train_single(config):
 
     _print_config_summary(model, config, config["total_timesteps"], config["enemies"])
 
-    callback = CatanLoggingCallback(
+    log_callback = CatanLoggingCallback(
         log_freq=config["log_freq"],
         reward_fn=reward_fn,
     )
+
+    from stable_baselines3.common.callbacks import CheckpointCallback
+    checkpoint_cb = CheckpointCallback(
+        save_freq=config.get("checkpoint_freq", 2_000_000),
+        save_path=os.path.dirname(config["save_path"]) or ".",
+        name_prefix=os.path.basename(config["save_path"]),
+        verbose=1,
+    )
+    callbacks = [log_callback, checkpoint_cb]
+
+    sp_cfg = config.get("self_play")
+    if sp_cfg:
+        from catanrl.self_play import SelfPlayCallback
+        sp = SelfPlayCallback(
+            config=config,
+            snapshot_dir=sp_cfg["snapshot_dir"],
+            snapshot_freq=sp_cfg.get("snapshot_freq", 100_000),
+            swap_freq=sp_cfg.get("swap_freq", 100_000),
+            ppo_prob=sp_cfg.get("ppo_prob", 0.7),
+            seed_models=sp_cfg.get("seed_models", []),
+            logging_callback=log_callback,
+            verbose=1,
+        )
+        callbacks.append(sp)
+
     model.learn(
         total_timesteps=config["total_timesteps"],
-        callback=callback,
+        callback=callbacks,
         reset_num_timesteps=reset_steps,
     )
     model.save(config["save_path"])
     env.close()
 
     print(f"\nModel saved to {config['save_path']}.zip")
-    return model, callback
+    return model, log_callback
 
 
 def train_curriculum(config):
@@ -139,8 +162,9 @@ def train_curriculum(config):
     reward_fn = getattr(env, "reward_fn", None)
     resume_from = config.get("resume_from")
     if resume_from:
+        clean_resume = ensure_model_zip(resume_from) + ".zip"
         model = MaskablePPO.load(
-            resume_from,
+            clean_resume,
             env=env,
             learning_rate=_make_lr(config),
             tensorboard_log=config["tb_log"],
