@@ -55,6 +55,22 @@ def _make_lr(config):
 
 
 def _make_model(config, env):
+    policy_kwargs = dict(net_arch=config["net_arch"])
+
+    if config.get("gnn_encoder"):
+        from catanrl.models import CatanGraphEncoder
+        policy_kwargs["features_extractor_class"] = CatanGraphEncoder
+        policy_kwargs["features_extractor_kwargs"] = dict(
+            features_dim=config.get("features_dim", 512),
+            hidden_dim=config.get("gnn_hidden_dim", 32)
+        )
+    elif config.get("structured_encoder"):
+        from catanrl.models import CatanTopologyExtractor
+        policy_kwargs["features_extractor_class"] = CatanTopologyExtractor
+        policy_kwargs["features_extractor_kwargs"] = dict(
+            features_dim=config.get("features_dim", 512)
+        )
+
     return MaskablePPO(
         MaskableActorCriticPolicy,
         env,
@@ -66,7 +82,7 @@ def _make_model(config, env):
         gamma=config["gamma"],
         ent_coef=config["ent_coef"],
         tensorboard_log=config["tb_log"],
-        policy_kwargs=dict(net_arch=config["net_arch"]),
+        policy_kwargs=policy_kwargs,
     )
 
 

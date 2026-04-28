@@ -109,14 +109,19 @@ class SelfPlayCallback(BaseCallback):
         from catanrl.env_utils import make_env
 
         pool = self._pool_zips()
-        if not pool:
-            return
-
+        
         n_enemies = len(self.config.get("enemies", []))
         new_enemies = []
+        
+        # Chance to pick specific benchmark bots if configured
+        benchmark_bots = self.config.get("self_play", {}).get("benchmark_bots", [])
+        
         for _ in range(n_enemies):
-            if random.random() < self.ppo_prob:
+            r = random.random()
+            if r < self.ppo_prob and pool:
                 new_enemies.append(f"{_PPO_PREFIX}{random.choice(pool)[:-4]}")
+            elif benchmark_bots and random.random() < 0.5: # 50% of non-PPO are benchmarks
+                new_enemies.append(random.choice(benchmark_bots))
             else:
                 new_enemies.append("WeightedRandom")
 
@@ -134,8 +139,11 @@ class SelfPlayCallback(BaseCallback):
 
         self._swap_count += 1
         if self.verbose:
-            labels = [e[len(_PPO_PREFIX):].split("snap_")[-1] if e.startswith(_PPO_PREFIX) else e
-                      for e in new_enemies]
+            def _label(e):
+                if e.startswith(_PPO_PREFIX):
+                    return e.split("snap_")[-1]
+                return e
+            labels = [_label(e) for e in new_enemies]
             print(f"[SelfPlay] Swap #{self._swap_count} → {labels}")
 
     # ------------------------------------------------------------------

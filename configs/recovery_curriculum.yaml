@@ -1,0 +1,22 @@
+# Recovery from Stage 1 Peak (48% win rate)
+vps_to_win: 10
+structured_encoder: True
+features_dim: 256
+self_play: True
+self_play_freq: 50000
+self_play_dir: "/storage/models/snapshots_recovery"
+
+# Stricter learning for fine-tuning
+learning_rate: 0.0001 # 3x lower for stability
+ent_coef: 0.08        # Higher entropy to force exploration against strong bots
+
+load_path: "/storage/models/advanced_run_stage1.zip"
+
+curriculum:
+  - timesteps: 2000000  # Shorter, more focused training
+    enemies: ["Self", "ValueFunction", "WeightedRandom"]
+  - timesteps: 2000000
+    enemies: ["Self", "AlphaBeta", "WeightedRandom"]
+
+save_path: "models/recovery_run"
+tb_log: "logs/recovery_run"

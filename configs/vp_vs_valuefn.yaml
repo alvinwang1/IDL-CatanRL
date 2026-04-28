@@ -6,9 +6,9 @@
 #   python -m catanrl.train --config configs/vp_vs_valuefn.yaml
 
 reward_type: "pbrs"
-pbrs_lambda: 1.0
+pbrs_lambda: 0.5
 pbrs_normalize: true
-pbrs_phi_cap: 3.0
+pbrs_phi_cap: 4.0
 
 net_arch: [256, 256]
 learning_rate: 5e-5

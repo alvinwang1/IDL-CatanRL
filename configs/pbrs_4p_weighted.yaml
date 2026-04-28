@@ -3,6 +3,8 @@ enemies: ["WeightedRandom", "WeightedRandom", "WeightedRandom"]
 reward_type: "pbrs"
 pbrs_lambda: 1.0
 pbrs_normalize: true
+pbrs_phi_cap: 4.0
+
 
 net_arch: [256, 256]
 learning_rate: 3e-4

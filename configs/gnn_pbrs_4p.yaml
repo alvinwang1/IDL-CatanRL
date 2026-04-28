@@ -1,0 +1,45 @@
+# GNN Training Configuration with Optimal Curriculum from Slide
+# Stages: 4M, 8M, 13M, 2M (27M total)
+# Opponents:
+#   Stage 1: 3x WR, 10 VP
+#   Stage 2: 2x WR + 1x VF, 8 VP
+#   Stage 3: 2x WR + 1x VF, 10 VP
+#   Stage 4: 1x WR + 2x VF, 10 VP
+
+gnn_encoder: True
+gnn_hidden_dim: 32
+features_dim: 512
+
+reward_type: "pbrs"
+pbrs_lambda: 0.5
+pbrs_normalize: true
+pbrs_phi_cap: 5.0
+
+net_arch: [1024, 512, 256]
+learning_rate: 3e-4
+n_steps: 2048
+batch_size: 256
+n_epochs: 10
+gamma: 0.999
+ent_coef: 0.01
+
+save_path: "models/gnn_curriculum_best"
+tb_log: "logs/gnn_curriculum_best"
+log_freq: 10_000
+
+# Global default vps_to_win
+vps_to_win: 10
+
+curriculum:
+  - enemies: ["WeightedRandom", "WeightedRandom", "WeightedRandom"]
+    timesteps: 4_000_000
+    vps_to_win: 10
+  - enemies: ["ValueFunction", "WeightedRandom", "WeightedRandom"]
+    timesteps: 8_000_000
+    vps_to_win: 8
+  - enemies: ["ValueFunction", "WeightedRandom", "WeightedRandom"]
+    timesteps: 13_000_000
+    vps_to_win: 10
+  - enemies: ["ValueFunction", "ValueFunction", "WeightedRandom"]
+    timesteps: 2_000_000
+    vps_to_win: 10

@@ -1,0 +1,23 @@
+# Advanced training with Structured Encoder and Self-Play
+vps_to_win: 10
+structured_encoder: True
+features_dim: 256
+self_play: True
+self_play_freq: 50000
+self_play_dir: "models/snapshots"
+
+learning_rate: 0.0003
+ent_coef: 0.05  # Higher exploration for self-play
+
+curriculum:
+  - timesteps: 2000000
+    enemies: ["WeightedRandom", "WeightedRandom", "WeightedRandom"]
+  - timesteps: 2000000
+    enemies: ["Self", "WeightedRandom", "WeightedRandom"]
+  - timesteps: 4000000
+    enemies: ["Self", "ValueFunction", "WeightedRandom"]
+  - timesteps: 2000000
+    enemies: ["Self", "AlphaBeta", "WeightedRandom"]
+
+save_path: "models/advanced_run"
+tb_log: "logs/advanced_run"

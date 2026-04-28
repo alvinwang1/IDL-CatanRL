@@ -1,0 +1,49 @@
+# Alpha-Beta Inspired Self-Play
+# Inherits "intuition" from Alpha-Beta via Expert Features and Potential-Based Reward Shaping.
+#
+# Training process:
+#   1. Pre-train on Alpha-Beta score: python scripts/pretrain_value_head.py
+#   2. Run this config: python -m catanrl.train --config configs/alpha_beta_self_play.yaml
+
+reward_type: "pbrs"
+pbrs_lambda: 1.0
+pbrs_normalize: true
+pbrs_phi_cap: 10.0
+
+structured_encoder: True
+features_dim: 256
+net_arch: [1024, 512, 256]
+
+learning_rate: 1e-4
+lr_schedule: "linear"
+n_steps: 2048
+batch_size: 256
+n_epochs: 10
+gamma: 0.999
+ent_coef: 0.05      # higher entropy for exploring new expert features
+
+total_timesteps: 10_000_000
+
+save_path: "models/alpha_beta_self_play"
+tb_log:    "logs/alpha_beta_self_play"
+log_freq:  10_000
+
+# Warm-start from pre-trained Alpha-Beta value head
+resume_from: "models/alpha_beta_self_play_pretrained"
+
+# Initial opponents: start hard to force learning from expert features
+enemies:
+  - "AlphaBeta"
+  - "ValueFunction"
+  - "WeightedRandom"
+
+self_play:
+  snapshot_dir:   "snapshots/alpha_beta"
+  snapshot_freq:  200_000
+  swap_freq:      200_000
+  ppo_prob:       0.6
+  benchmark_bots:
+    - "AlphaBeta"
+    - "ValueFunction"
+  seed_models:
+    - "models/alpha_beta_self_play_pretrained"
