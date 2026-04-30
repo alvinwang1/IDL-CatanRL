@@ -1,4 +1,4 @@
-# CatanRL: Sample-Efficient Reinforcement Learning for Settlers of Catan
+# CatanRL: Reinforcement Learning for Settlers of Catan
 
 This repository implements a deep reinforcement learning pipeline for the board game **Settlers of Catan**, built on the [Catanatron](https://github.com/bcollazo/catanatron) simulator. We use **MaskablePPO** to handle the game's large and dynamic action space, combined with reward shaping and curriculum learning to achieve competitive performance against heuristic bots.
 
@@ -20,7 +20,7 @@ This repository implements a deep reinforcement learning pipeline for the board 
 | Self-Play Fine-Tuning | 3× WeightedRandom | 32M | **64.8%** |
 | PBRS + Curriculum | 1× ValueFunction | 27M | **10.7%** |
 
-*Note: Random chance in a 4-player game is 25%.*
+*Note: Random chance in a 4-player game is 25% against other random opponents.*
 
 ## Project Structure
 
